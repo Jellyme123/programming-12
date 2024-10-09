@@ -3,6 +3,7 @@ class button{
   boolean clicked;
   int normal, highlight;
   String text;
+  PImage pic;
   
   button(String t,int _x,int _y,int _w,int _h,color norm, color highl){
     x=_x;
@@ -13,12 +14,25 @@ class button{
     highlight=highl;
     normal=norm;
     clicked=false;
-      
+  }
+  
+   button(PImage img,int _x,int _y,int _w,int _h,color norm, color highl){
+    x=_x;
+    y=_y;
+    w=_w;
+    h=_h;
+    pic=img;
+    highlight=highl;
+    normal=norm;
+    clicked=false;
+    img=pic;
   }
   
   void show(){
      rectMode(CENTER);
+     imageMode(CENTER);
     textAlign(CENTER,CENTER);
+    
     drawRect();
     drawLabel();
     checkForClick();
@@ -27,7 +41,7 @@ class button{
 }
 
  void drawRect(){
-    if(mouseX>x-w/2 && mouseX<x+w/2 && mouseY>y-h/2 && mouseY<y+h/2){
+    if(touchingmouse()){
       
       fill(highlight);
     }else{
@@ -41,18 +55,27 @@ class button{
   }
   
   void drawLabel(){
-      if(mouseX>x-w/2 && mouseX<x+w/2 && mouseY>y-h/2 && mouseY<y+h/2){
+      if(touchingmouse()){
       fill(normal);
     }else{
       fill(highlight);
     }
-    textSize(w/4);
+    
+    
+    
+    if(pic==null){
+      textSize(w/4);
     text(text,x,y);
+    }else{
+      image(pic,x,y,w,h);
+    }
+    
+    
     
   }
   
   void checkForClick(){
-     if (mouseReleased &&mouseX>x-w/2 && mouseX<x+w/2 && mouseY>y-h/2 && mouseY<y+h/2){
+     if (mouseReleased &&touchingmouse()){
     clicked=true;
     
   }else{
@@ -65,8 +88,16 @@ clicked=false;
   
   void clicked(){
     if(clicked==true){
-      backgroundcolor=white;
+      backgroundcolor=normal;
     }
   }
   
+  boolean touchingmouse(){
+    return mouseX>x-w/2 && mouseX<x+w/2 && mouseY>y-h/2 && mouseY<y+h/2;
   }
+  
+  
+  
+  }
+  
+  
