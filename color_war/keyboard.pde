@@ -21,5 +21,4 @@ void keyReleased(){
   if(keyCode ==DOWN) keydown=false;
   if(keyCode ==LEFT) keyL=false;
   if(keyCode ==RIGHT) keyR=false;
-  
 }
