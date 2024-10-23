@@ -14,6 +14,8 @@ float vx, vy;
 
 FBox rightPlayer;
 FBox leftPlayer;
+FCircle ball;
+FBox ground;
 
 void setup(){
  size(800,800);
@@ -22,6 +24,7 @@ void setup(){
  ground();
  leftPlayer();
  rightPlayer();
+ ball();
 }
 
 void makeWorld() {
@@ -38,20 +41,12 @@ void draw(){
   //leftPlayer();
   world.step();
   world.draw();
-  
-  //if(hitGround(leftGround)){
-    
-  //}
-  
-  //if(){
-    
-  //}
 }
 
 void ground(){
-  FBox ground= new FBox(800,200);
+  ground= new FBox(800,200);
   
-  ground.setStrokeWeight(2);
+  
   ground.setStroke(0);
   ground.setFillColor(red);
   ground.setStatic(true);
@@ -84,8 +79,20 @@ void rightPlayer(){
   rightPlayer.setStrokeWeight(2);
   rightPlayer.setFillColor(white);
   rightPlayer.setPosition(200,100);
+  //rightPlayer.setDensity(1);
   
   world.add(rightPlayer);
+}
+
+void ball(){
+  
+  ball=new FCircle(50);
+  ball.setPosition(400,400);
+  ball.setFriction(1);
+  ball.setRestitution(1);
+  
+  world.add(ball);
+  
 }
 
 void handlePlayerInput(){
@@ -93,12 +100,15 @@ void handlePlayerInput(){
   float left_vy = rightPlayer.getVelocityY();
   float right_vx = leftPlayer.getVelocityX();
   float right_vy = leftPlayer.getVelocityY();
-  if(wkey) leftPlayer.setVelocity(left_vy,-1000);
+  if(wkey && ltouchground(ground)) leftPlayer.setVelocity(left_vy,-1000);
+  if(skey) leftPlayer.setVelocity(left_vy,1000);
   if(akey) leftPlayer.setVelocity(-100,left_vx);
   if(dkey) leftPlayer.setVelocity(100,left_vx);
+
   
   
-  if(upkey) rightPlayer.setVelocity(right_vy,-1000);
+  if(upkey && rtouchground(ground)) rightPlayer.setVelocity(right_vy,-1000);
+  if(downkey) rightPlayer.setVelocity(right_vy,1000);
   if(leftkey) rightPlayer.setVelocity(-100,right_vx);
   if(rightkey) rightPlayer.setVelocity(100,right_vx);
 }
@@ -125,7 +135,39 @@ if(keyCode==LEFT) leftkey=false;
 if(keyCode==RIGHT) rightkey=false;
 }
 
-
-boolean touchground(FBox ground){
+boolean touchball(FBox ground){
   ArrayList<FContact> contactList=ball.getContacts();
+  for(int i=0;i<contactList.size();i++){
+    FContact myContact= contactList.get(i);
+    if(myContact.contains(ground)){
+      return true;
+    }
+  }
+   return false;
+}
+
+boolean ltouchground(FBox ground){
+  println("a");
+  ArrayList<FContact> groundcontactList=leftPlayer.getContacts();
+  for(int i=0;i<groundcontactList.size();i++){
+    FContact myContact= groundcontactList.get(i);
+    if(myContact.contains(ground)){
+      println("c");
+      return true;
+    }
+  }
+   return true;
+}
+
+boolean rtouchground(FBox ground){
+  println("a");
+  ArrayList<FContact> groundcontactList=rightPlayer.getContacts();
+  for(int i=0;i<groundcontactList.size();i++){
+    FContact myContact= groundcontactList.get(i);
+    if(myContact.contains(ground)){
+      println("c");
+      return true;
+    }
+  }
+   return true;
 }
