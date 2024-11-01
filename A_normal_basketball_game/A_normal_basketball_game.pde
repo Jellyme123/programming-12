@@ -1,7 +1,16 @@
+button[] mybutton;
 import fisica.*;
 
-PImage basketball;
+final int INTRO=0;
+final int GAME=1;
+final int END=2;
 
+int mode;
+
+PImage basketball,lcloth,rcloth;
+
+boolean mouseReleased;
+boolean wasPressed;
 
 FWorld world;
 color blue =#18a8f5;
@@ -35,12 +44,33 @@ FBox rsensorbar;
 
 void setup(){
  size(800,800);
+
+basketball=loadImage("basketball1.png");
+ basketball.resize(40,40);
+ lcloth=loadImage("bluejersey.png");
+ lcloth.resize(60,60);
+ rcloth=loadImage("greenjersey.png");
+ rcloth.resize(60,60);
+ 
    noStroke();
  rectMode(CENTER);
  makeWorld();
- basketball=loadImage("basketball1.png");
- basketball.resize(40,40);
-lbasket();
+features();
+ mybutton=new button[4];
+ mybutton[0]=new button("Play!",400,600,100,50,yellow,red);
+ mybutton[1]=new button("replay",300,600,50,50,black,white);
+ mybutton[2]=new button("quit",500,600,50,50,black,red);
+}
+
+void makeWorld() {
+  Fisica.init(this);
+  world = new FWorld(-2000,-2000,2000,2000);
+  world.setGravity(0,900);
+  world.setEdges();
+}
+
+void features(){
+  lbasket();
 rbasket();
 llbasket();
 rrbasket();
@@ -51,16 +81,8 @@ rsensorbar();
  leftPlayer();
  rightPlayer();
  ball();
+  
 }
-
-void makeWorld() {
-  Fisica.init(this);
-  world = new FWorld(-2000,-2000,2000,2000);
-  world.setGravity(0,900);
-  world.setEdges();
-}
-
-
 
 void lbasket(){
   
@@ -132,8 +154,20 @@ void rsensorbar(){
   world.add(rsensorbar);
 }
 void draw(){
+  
+ // if(mode== INTRO){
+ //  Intro();
+ //} else if (mode==GAME){
+ //  two();
+ //} else if (mode==END){
+ //  three();
+ //}else{
+ //  println("Mode Error: Mode is "+mode);
+ //}
+  
+  
   background(0);
-  fill(brown);
+  fill(yellow);
   rect(400,460,850,100);
   noStroke();
   fill(steel);
@@ -155,6 +189,9 @@ void draw(){
   } else {
     displayWinMessage();
   }
+  
+  
+  
 }
 
 void ground(){
@@ -162,7 +199,7 @@ void ground(){
   
   
   ground.setStroke(0);
-  ground.setFillColor(yellow);
+  ground.setFillColor(brown);
   ground.setStatic(true);
   
   ground.setPosition(400,700);
@@ -171,12 +208,14 @@ void ground(){
 }
 
 void leftPlayer(){
-  leftPlayer=new FBox(50,50);
+  leftPlayer=new FBox(60,60);
   //set visuals
   leftPlayer.setStroke(0);
   leftPlayer.setStrokeWeight(0);
   leftPlayer.setFillColor(red);
   leftPlayer.setPosition(150,135);
+  
+  leftPlayer.attachImage(lcloth);
   
   leftPlayer.setDensity(1.1);
   leftPlayer.setFriction(0.9);
@@ -186,7 +225,7 @@ void leftPlayer(){
 }
 
 void rightPlayer(){
-  rightPlayer=new FBox(50,50);
+  rightPlayer=new FBox(60,60);
   //set visuals
   rightPlayer.setStroke(0);
   rightPlayer.setStrokeWeight(0);
@@ -194,6 +233,8 @@ void rightPlayer(){
   rightPlayer.setPosition(650,135);
   rightPlayer.setFriction(0.9);
   rightPlayer.setDensity(1.1);
+  rightPlayer.attachImage(rcloth);
+  
   world.add(rightPlayer);
 }
 
