@@ -86,10 +86,18 @@ clicked=false;
   
   }
   
-  void clicked(){
-    if(clicked==true){
+  void introclicked(){
+    if(clicked==true&& Intro){
+     Intro=false;
      
     }
+  }
+  void endclicked(){
+    if(clicked==true){
+    Intro=true;
+    gameOver=false;
+    }
+    
   }
   
   boolean touchingmouse(){
