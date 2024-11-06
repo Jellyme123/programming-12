@@ -1,7 +1,6 @@
 button[] mybutton;
 import fisica.*;
 
-
 PImage basketball, lcloth, rcloth;
 
 boolean mouseReleased;
@@ -23,7 +22,7 @@ float vx, vy;
 int leftScore = 0;
 int rightScore = 0;
 boolean gameOver = false;
-boolean Intro;
+boolean Intro=true;
 
 FBox rightPlayer;
 FBox leftPlayer;
@@ -42,9 +41,9 @@ void setup() {
   basketball=loadImage("basketball1.png");
   basketball.resize(40, 40);
   lcloth=loadImage("bluejersey.png");
-  lcloth.resize(60, 60);
+  lcloth.resize(85, 75);
   rcloth=loadImage("greenjersey.png");
-  rcloth.resize(60, 60);
+  rcloth.resize(85, 75);
 
   noStroke();
   rectMode(CENTER);
@@ -52,8 +51,7 @@ void setup() {
   features();
   mybutton=new button[4];
   mybutton[0]=new button("Play!", 400, 600, 100, 50, yellow, red);
-  mybutton[1]=new button("replay", 300, 600, 50, 50, black, white);
-  mybutton[2]=new button("quit", 500, 600, 50, 50, black, red);
+  mybutton[1]=new button("replay", 400, 600, 100, 50, black, white);
 }
 
 void makeWorld() {
@@ -80,7 +78,6 @@ void features() {
 void lbasket() {
 
   lbasket= new FPoly();
-
   lbasket.vertex(90, 200);
   lbasket.vertex(100, 200);
   lbasket.vertex(113, 250);
@@ -147,7 +144,8 @@ void rsensorbar() {
   world.add(rsensorbar);
 }
 void draw() {
-  background(0);
+  click();
+  background(white);
   fill(yellow);
   rect(400, 460, 850, 100);
   noStroke();
@@ -161,10 +159,13 @@ void draw() {
 
   world.setGravity(0, 900);
 
-  if (Intro) {
+   if (Intro) {
     intro();
-  } else if (!gameOver) {
-    background(255);
+     mybutton[0].show();
+     mybutton[0].introclicked();
+   
+ }else if (gameOver==false) {
+    
     world.step();
     world.draw();
     handlePlayerInput();
@@ -175,7 +176,6 @@ void draw() {
     displayWinMessage();
   }
 }
-
 void ground() {
   ground= new FBox(800, 200);
   ground.setStroke(0);
@@ -184,8 +184,6 @@ void ground() {
   ground.setPosition(400, 700);
   world.add(ground);
 }
-
-
 
 void leftPlayer() {
   leftPlayer=new FBox(60, 60);
@@ -332,7 +330,7 @@ void resetBall() {
 void displayScores() {
   fill(255);
   textSize(32);
-  text("RED: " + leftScore, 115, 700);
+  text("RED: " + leftScore, 200, 700);
   text("WHITE: " + rightScore, 590, 700);
 }
 
@@ -342,25 +340,27 @@ void displayWinMessage() {
   textSize(60);
   if (leftScore > 1) {
     fill(red);
-    text("RED Wins!", 300, 400);
-    mybutton[1].show();
-    mybutton[1].endclicked();
+    text("RED Wins!", 400, 400);
     mybutton[1].show();
     mybutton[1].endclicked();
   } else {
     fill(white);
-    text("WHITE Wins!", 200, 400);
+    text("WHITE Wins!", 400, 400);
     mybutton[1].show();
     mybutton[1].endclicked();
-    mybutton[2].show();
-    mybutton[2].endclicked();
+    
   }
 }
 
 
 void intro(){
   background(0);
-  mybutton[0].show();
-  mybutton[0].introclicked();
+  textSize(60);
+  text("A NORMAL BASKETBALL GAME",400,200);
+}
+
+void reset(){
+  leftScore=0;
+  rightScore=0;
   
 }

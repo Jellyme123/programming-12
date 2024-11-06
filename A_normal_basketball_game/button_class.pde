@@ -29,8 +29,8 @@ class button{
   }
   
   void show(){
-     rectMode(CENTER);
-     imageMode(CENTER);
+    
+    
     textAlign(CENTER,CENTER);
     
     drawRect();
@@ -77,27 +77,23 @@ class button{
   void checkForClick(){
      if (mouseReleased &&touchingmouse()){
     clicked=true;
-    
   }else{
 clicked=false;
-
   } 
-  
-  
   }
   
   void introclicked(){
     if(clicked==true&& Intro){
+      println("a");
      Intro=false;
-     
     }
   }
   void endclicked(){
-    if(clicked==true){
+    if(clicked==true&& gameOver==true && Intro==false){
     Intro=true;
     gameOver=false;
+    reset();
     }
-    
   }
   
   boolean touchingmouse(){
