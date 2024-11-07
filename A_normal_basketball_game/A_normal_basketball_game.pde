@@ -1,6 +1,8 @@
 button[] mybutton;
 import fisica.*;
 
+Gif colorful;
+
 PImage basketball, lcloth, rcloth;
 
 boolean mouseReleased;
@@ -37,13 +39,15 @@ FBox rsensorbar;
 
 void setup() {
   size(800, 800);
+  
+  
   Intro=true;
   basketball=loadImage("basketball1.png");
   basketball.resize(40, 40);
   lcloth=loadImage("bluejersey.png");
-  lcloth.resize(85, 75);
+  lcloth.resize(120, 85);
   rcloth=loadImage("greenjersey.png");
-  rcloth.resize(85, 75);
+  rcloth.resize(120, 85);
 
   noStroke();
   rectMode(CENTER);
@@ -52,6 +56,8 @@ void setup() {
   mybutton=new button[4];
   mybutton[0]=new button("Play!", 400, 600, 100, 50, yellow, red);
   mybutton[1]=new button("replay", 400, 600, 100, 50, black, white);
+  
+  colorful=new Gif("gif/frame_","_delay-0.1s.gif",36,5,0,0,800,800);
 }
 
 void makeWorld() {
@@ -144,8 +150,9 @@ void rsensorbar() {
   world.add(rsensorbar);
 }
 void draw() {
+  colorful.show();
   click();
-  background(white);
+  
   fill(yellow);
   rect(400, 460, 850, 100);
   noStroke();
