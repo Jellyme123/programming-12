@@ -8,10 +8,15 @@ void keyPressed(){
   if(keyCode ==LEFT) keyL=true;
   if(keyCode ==RIGHT) keyR=true;
   //put chess
-  if(key =='m') turnshift=false;
-  if(keyCode ==TAB)  turnshift=true;
+  if(key =='m'){
+    turnshift=false;
+    
+  }
+  if(keyCode ==TAB){
+    turnshift=true;
+    
 }
-
+}
 void keyReleased(){
   if(key=='a'|| key=='A') keya=false;
   if(key=='d'|| key=='D') keyd=false;

@@ -12,5 +12,6 @@ void mousePressed(){
   if(mouseX>0 && mouseX<800 && mouseY>0 && mouseY<800){
     mode=GAME;
       }
-  
+      
+
 }

@@ -1,7 +1,11 @@
+//
+int cols=8;
+int rows=8;
+
 //arrays
-int [][]piece;
-int [][]player;
-int playernumber=1;
+int [][]atoms;
+int [][]owners;
+int currentPlayer=1;
 
 int mode;
 final int INSTRUCTION=0;
@@ -17,11 +21,12 @@ boolean keyup;
 boolean keydown;
 boolean keyR;
 boolean keyL;
+boolean keytab;
+boolean keym;
 
 //color of the chess
 boolean colorc;
 //turn
-boolean turnRed;
 boolean turnR;
 boolean turnB;
 boolean turnshift;
@@ -53,6 +58,9 @@ void setup(){
   textAlign(CENTER,CENTER);
   mode=GAME;
   
+  atoms= new int[cols][rows];
+  owners= new int[cols][rows];
+  
   //man movement
  leftx=100;
  lefty=400;
@@ -74,6 +82,8 @@ void setup(){
    turnR=false;
    turnB=true;
  }
+ 
+ 
 }
 
 void draw(){
