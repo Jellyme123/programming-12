@@ -15,6 +15,8 @@ class FGameObject extends FBox{
       FContact fc=contacts.get(i);
       if(fc.contains("spike")){
         return true;
+      }else if(fc.contains("bridge")){
+        return true;
       }
     }
     return false;

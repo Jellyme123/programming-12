@@ -1,11 +1,12 @@
 import fisica.*;
 
 FWorld world;
-PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike;
+FPlayer player;
+PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike,bridge;
 int gridSize=32;
 float zoom=1.5;
 boolean wkey, akey, skey, dkey, upkey, downkey, rightkey, leftkey;
-FPlayer player;
+ArrayList <FGameObject> terrain;
 
 color white = #FFFFFF;
 color black = #000000;
@@ -15,7 +16,7 @@ color blue =#18a8f5;
 color yellow =#f7e00f;
 color green =#00FF00;
 color red =#ff0000;
-color orange =#f7a414;
+color orange =#ff7e00;
 color steel=#bfbebd;
 color brown=#994831;
 color grey=#b4b4b4;
@@ -24,6 +25,7 @@ color grey=#b4b4b4;
 void setup() {
   size(1200, 1200);
   Fisica.init(this);
+  terrain= new ArrayList<FGameObject>();
 
   map = loadImage("terrainmap.png");
   water1 = loadImage("water1.png") ;
@@ -37,11 +39,14 @@ treeIntersect= loadImage("tree_intersect.png");
 ltreeend=loadImage("treetop_w.png");
 rtreeend=loadImage("treetop_e.png");
 spike=loadImage("spike.png");
+bridge=loadImage("bridge.png");
+
 
 water1.resize (32,32);
  tree.resize (32,32);
  lava0.resize (32,60);
  spike.resize (32,100);
+ bridge.resize(32,50);
   loadWorld(map);
   loadPlayer();
 }
@@ -111,6 +116,12 @@ void loadWorld(PImage img) {
         b.setName("rtreeend");
         world.add(b);
       }
+      //fancy terrain
+      if(c==orange) { 
+       FBridge br=new FBridge(x*gridSize,y*gridSize);
+       terrain.add(br);
+       world.add(br);
+      }
     }
   }
 }
@@ -120,7 +131,14 @@ void loadWorld(PImage img) {
   void draw(){
     background(255);
     drawWorld();
+    actWorld();
+  }
+  void actWorld(){
     player.act();
+    for(int i=0; i< terrain.size(); i++){
+      FGameObject t= terrain.get(i);
+      t.act();
+    }
   }
   
 void loadPlayer(){
