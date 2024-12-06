@@ -2,7 +2,14 @@ import fisica.*;
 
 FWorld world;
 FPlayer player;
+
 PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike,bridge;
+PImage[] idle;
+PImage[] jump;
+PImage[] walk;
+PImage[] action;
+
+
 int gridSize=32;
 float zoom=1.5;
 boolean wkey, akey, skey, dkey, upkey, downkey, rightkey, leftkey;
@@ -20,6 +27,7 @@ color orange =#ff7e00;
 color steel=#bfbebd;
 color brown=#994831;
 color grey=#b4b4b4;
+
 
 
 void setup() {
@@ -40,6 +48,31 @@ ltreeend=loadImage("treetop_w.png");
 rtreeend=loadImage("treetop_e.png");
 spike=loadImage("spike.png");
 bridge=loadImage("bridge.png");
+
+//load actions
+idle= new PImage[2];
+idle[0]= loadImage("idle0.png");
+idle[1]=loadImage("idle1.png");
+
+walk= new PImage[12];
+walk[0]=loadImage("walk0.png");
+walk[1]=loadImage("walk1.png");
+walk[2]=loadImage("walk2.png");
+walk[3]=loadImage("walk3.png");
+walk[4]=loadImage("walk4.png");
+walk[5]=loadImage("walk5.png");
+walk[6]=loadImage("walk6.png");
+walk[7]=loadImage("walk7.png");
+walk[8]=loadImage("walk8.png");
+walk[9]=loadImage("walk9.png");
+walk[10]=loadImage("walk10.png");
+walk[11]=loadImage("walk11.png");
+
+jump =new PImage[1];
+jump[0]= loadImage("jump0.png");
+
+action=idle;
+
 
 
 water1.resize (32,32);

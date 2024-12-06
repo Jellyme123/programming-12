@@ -13,11 +13,10 @@ class FGameObject extends FBox{
     ArrayList<FContact> contacts= getContacts();
     for(int i=0; i<contacts.size(); i++){
       FContact fc=contacts.get(i);
-      if(fc.contains("spike")){
-        return true;
-      }else if(fc.contains("bridge")){
+      if(fc.contains(n)){
         return true;
       }
+
     }
     return false;
   }
