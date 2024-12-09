@@ -1,10 +1,17 @@
 class FPlayer extends FGameObject{
   
+  int frame;
+  int direction;
+  final int L=-1;
+  final int R=1;
+  
   FPlayer(){
     super();
+    frame=0;
+    direction=R;
     setName("player");
     setRotatable(false);
-    setPosition(700,700);
+    setPosition(600,300);
     setFillColor(red);
   }
   
@@ -18,43 +25,48 @@ class FPlayer extends FGameObject{
   void handleInput(){
     float vx = player.getVelocityX();
   float vy = player.getVelocityY();
-  if(vy==0){
+  if(abs(vy)<0.1){
     action=idle;
   }
   if (wkey) {
-    vy = -700;
+    vy = -300;
     
   }
   
   if (skey) {
-    vy = 700;
+    vy = 300;
     
   }
   if (akey) {
     vx = -200;
     action=walk;
+    direction=L;
   }
   if (dkey) {
     vx = 200;
     action=walk;
+    direction=R;
   }
   if(abs(vy)>0.1){
     action=jump;
   }
   player.setVelocity(vx, vy);
   }
-}
-void animate(){
+
+  void animate(){
   
-  if(frame>=action.length) frame=0;
-  
-  if(attachImage%5==0){
-    attachImage(action[frame]);
+  if(frame>= action.length) frame=0;
+  if(frameCount%11==0){
+    if(direction==R)  attachImage(action[frame]);
+    if (direction==L) attachImage(reverseImage(action[frame]));
     frame++;
+    }
   }
-}
-void collision(){
+  
+  void collision(){
   if(isTouching("spike")){
      setPosition(0,0);
    }
+  }
+
 }

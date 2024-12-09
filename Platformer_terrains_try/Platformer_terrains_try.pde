@@ -49,31 +49,50 @@ rtreeend=loadImage("treetop_e.png");
 spike=loadImage("spike.png");
 bridge=loadImage("bridge.png");
 
+
+
+
 //load actions
 idle= new PImage[2];
-idle[0]= loadImage("idle0.png");
-idle[1]=loadImage("idle1.png");
+idle[0]= loadImage("character/idle0.png");
+idle[1]=loadImage("character/idle1.png");
 
 walk= new PImage[12];
-walk[0]=loadImage("walk0.png");
-walk[1]=loadImage("walk1.png");
-walk[2]=loadImage("walk2.png");
-walk[3]=loadImage("walk3.png");
-walk[4]=loadImage("walk4.png");
-walk[5]=loadImage("walk5.png");
-walk[6]=loadImage("walk6.png");
-walk[7]=loadImage("walk7.png");
-walk[8]=loadImage("walk8.png");
-walk[9]=loadImage("walk9.png");
-walk[10]=loadImage("walk10.png");
-walk[11]=loadImage("walk11.png");
+walk[0]=loadImage("character/walk0.png");
+walk[1]=loadImage("character/walk1.png");
+walk[2]=loadImage("character/walk2.png");
+walk[3]=loadImage("character/walk3.png");
+walk[4]=loadImage("character/walk4.png");
+walk[5]=loadImage("character/walk5.png");
+walk[6]=loadImage("character/walk6.png");
+walk[7]=loadImage("character/walk7.png");
+walk[8]=loadImage("character/walk8.png");
+walk[9]=loadImage("character/walk9.png");
+walk[10]=loadImage("character/walk10.png");
+walk[11]=loadImage("character/walk11.png");
 
 jump =new PImage[1];
-jump[0]= loadImage("jump0.png");
+jump[0]= loadImage("character/jump0.png");
 
 action=idle;
 
+walk[0].resize (80,40);
+walk[1].resize (80,40);
+walk[2].resize (80,40);
+walk[3].resize (80,40);
+walk[4].resize (80,40);
+walk[5].resize (80,40);
+walk[6].resize (80,40);
+walk[7].resize (80,40);
+walk[8].resize (80,40);
+walk[9].resize (80,40);
+walk[10].resize (80,40);
+walk[11].resize (80,40);
 
+jump[0].resize (80,40);
+
+idle[0].resize (80,40);
+idle[1].resize (80,40);
 
 water1.resize (32,32);
  tree.resize (32,32);

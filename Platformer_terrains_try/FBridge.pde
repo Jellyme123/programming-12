@@ -9,7 +9,6 @@ class FBridge extends FGameObject{
   }
   
   void act(){
-    println("ahfoi");
     if (isTouching("player")){
        println("afs");
       setStatic(false);
