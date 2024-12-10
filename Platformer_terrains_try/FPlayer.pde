@@ -2,8 +2,7 @@ class FPlayer extends FGameObject{
   
   int frame;
   int direction;
-  final int L=-1;
-  final int R=1;
+  
   
   FPlayer(){
     super();
@@ -28,7 +27,7 @@ class FPlayer extends FGameObject{
   if(abs(vy)<0.1){
     action=idle;
   }
-  if (wkey) {
+  if (wkey&& isTouching("brick")) {
     vy = -300;
     
   }

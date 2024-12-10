@@ -3,17 +3,18 @@ import fisica.*;
 FWorld world;
 FPlayer player;
 
-PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike,bridge;
+PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike,bridge, trampoline;
 PImage[] idle;
 PImage[] jump;
 PImage[] walk;
 PImage[] action;
-
+PImage[] goomba;
 
 int gridSize=32;
 float zoom=1.5;
 boolean wkey, akey, skey, dkey, upkey, downkey, rightkey, leftkey;
 ArrayList <FGameObject> terrain;
+ArrayList <FGameObject> enemies;
 
 color white = #FFFFFF;
 color black = #000000;
@@ -27,7 +28,9 @@ color orange =#ff7e00;
 color steel=#bfbebd;
 color brown=#994831;
 color grey=#b4b4b4;
-
+color wallgrey=#464646;
+color Goombas=#990030;
+color pink=#ffa3b1;
 
 
 void setup() {
@@ -48,9 +51,7 @@ ltreeend=loadImage("treetop_w.png");
 rtreeend=loadImage("treetop_e.png");
 spike=loadImage("spike.png");
 bridge=loadImage("bridge.png");
-
-
-
+trampoline=loadImage("trampoline.png");
 
 //load actions
 idle= new PImage[2];
@@ -76,24 +77,32 @@ jump[0]= loadImage("character/jump0.png");
 
 action=idle;
 
-walk[0].resize (80,40);
-walk[1].resize (80,40);
-walk[2].resize (80,40);
-walk[3].resize (80,40);
-walk[4].resize (80,40);
-walk[5].resize (80,40);
-walk[6].resize (80,40);
-walk[7].resize (80,40);
-walk[8].resize (80,40);
-walk[9].resize (80,40);
-walk[10].resize (80,40);
-walk[11].resize (80,40);
+walk[0].resize (130,40);
+walk[1].resize (130,40);
+walk[2].resize (130,40);
+walk[3].resize (130,40);
+walk[4].resize (130,40);
+walk[5].resize (130,40);
+walk[6].resize (130,40);
+walk[7].resize (130,40);
+walk[8].resize (130,40);
+walk[9].resize (130,40);
+walk[10].resize (130,40);
+walk[11].resize (130,40);
 
-jump[0].resize (80,40);
+jump[0].resize (130,40);
 
-idle[0].resize (80,40);
-idle[1].resize (80,40);
+idle[0].resize (130,40);
+idle[1].resize (130,40);
 
+//goomba
+goomba=new PImage[2];
+goomba[0]=loadImage("goomba0.png");
+goomba[0].resize(gridSize, gridSize);
+goomba[1]=loadImage("goomba1.png");
+goomba[1].resize(gridSize, gridSize);
+
+//other terrains
 water1.resize (32,32);
  tree.resize (32,32);
  lava0.resize (32,60);
@@ -123,8 +132,18 @@ void loadWorld(PImage img) {
        b.setName("brick");
         world.add(b);
       }
-      
-      
+      if (c==wallgrey) {//wall
+       b.attachImage(brick);
+       b.setFriction(4);
+       b.setName("wall");
+        world.add(b);
+      }
+      if(c==pink){ 
+        b.attachImage(trampoline);
+        b.setRestitution(1.1);
+        b.setName("trampoline");
+        world.add(b);
+      }
       if(c==cyan){ //water
         b.attachImage(water1);
         b.setFriction(0);
@@ -143,6 +162,9 @@ void loadWorld(PImage img) {
         b.setName("lava0");
         world.add(b);
       }
+      
+      
+      
       if(c==green) { 
         b.attachImage(tree);
         b.setName("tree");
@@ -153,18 +175,22 @@ void loadWorld(PImage img) {
         b.setName("spike");
         world.add(b);
       }
+      
       if(c==green && img.get(x,y+1) == treeTrunkBrown) { 
         b.attachImage(treeIntersect);
+        b.setFriction(4);
         b.setName("treeIntersect");
         world.add(b);
       }
       if(c==green && img.get(x-1,y) == white) { 
         b.attachImage(ltreeend);
+        b.setFriction(4);
         b.setName("ltreeend");
         world.add(b);
       }
       if(c==green && img.get(x+1,y) == white) { 
         b.attachImage(rtreeend);
+        b.setFriction(4);
         b.setName("rtreeend");
         world.add(b);
       }
@@ -174,10 +200,14 @@ void loadWorld(PImage img) {
        terrain.add(br);
        world.add(br);
       }
+      if(c==Goombas) { 
+       FGoomba gmb=new FGoomba(x*gridSize,y*gridSize);
+       terrain.add(gmb);
+       world.add(gmb);
+      }
     }
   }
 }
-
 
 
   void draw(){
@@ -190,6 +220,10 @@ void loadWorld(PImage img) {
     for(int i=0; i< terrain.size(); i++){
       FGameObject t= terrain.get(i);
       t.act();
+    }
+    for(int i=0; i< enemies.size(); i++){
+      FGameObject e= terrain.get(i);
+      e.act();
     }
   }
   
