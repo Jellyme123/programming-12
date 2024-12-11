@@ -34,9 +34,10 @@ color pink=#ffa3b1;
 
 
 void setup() {
-  size(1200, 1200);
+  size(2000, 2000);
   Fisica.init(this);
   terrain= new ArrayList<FGameObject>();
+  enemies= new ArrayList<FGameObject>();
 
   map = loadImage("terrainmap.png");
   water1 = loadImage("water1.png") ;
@@ -51,7 +52,7 @@ ltreeend=loadImage("treetop_w.png");
 rtreeend=loadImage("treetop_e.png");
 spike=loadImage("spike.png");
 bridge=loadImage("bridge.png");
-trampoline=loadImage("trampoline.png");
+trampoline=loadImage("more/trampoline.png");
 
 //load actions
 idle= new PImage[2];
@@ -97,9 +98,9 @@ idle[1].resize (130,40);
 
 //goomba
 goomba=new PImage[2];
-goomba[0]=loadImage("goomba0.png");
+goomba[0]=loadImage("more/goomba0.png");
 goomba[0].resize(gridSize, gridSize);
-goomba[1]=loadImage("goomba1.png");
+goomba[1]=loadImage("more/goomba1.png");
 goomba[1].resize(gridSize, gridSize);
 
 //other terrains
@@ -234,7 +235,7 @@ void loadPlayer(){
 
 void drawWorld(){
   pushMatrix();
-  translate(-player.getX()*zoom+width/2, -player.getY()*zoom+height/2);
+  translate(-player.getX()*zoom+600, -player.getY()*zoom+600);
   scale(zoom);
    world.step();
     world.draw();

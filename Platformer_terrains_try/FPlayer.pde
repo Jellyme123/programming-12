@@ -28,12 +28,12 @@ class FPlayer extends FGameObject{
     action=idle;
   }
   if (wkey&& isTouching("brick")) {
-    vy = -300;
+    vy = -600;
     
   }
   
   if (skey) {
-    vy = 300;
+    vy = 600;
     
   }
   if (akey) {
