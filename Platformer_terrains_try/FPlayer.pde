@@ -2,11 +2,12 @@ class FPlayer extends FGameObject{
   
   int frame;
   int direction;
-  
+  int lives;
   
   FPlayer(){
     super();
     frame=0;
+    lives=3;
     direction=R;
     setName("player");
     setRotatable(false);
@@ -64,7 +65,7 @@ class FPlayer extends FGameObject{
   
   void collision(){
   if(isTouching("spike")){
-     setPosition(0,0);
+     setPosition(600,600);
    }
   }
 

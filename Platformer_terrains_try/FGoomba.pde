@@ -31,6 +31,16 @@ class FGoomba extends FGameObject{
       direction *=-1;
       setPosition(getX()+ direction, getY());
     }
+    if(isTouching("player")){
+      if(player.getY()<getY()-gridSize/2){
+      world.remove(this);
+      enemies.remove(this);
+      player.setVelocity(player.getVelocityX(),-600);
+      }else{
+        player.lives--;
+        player.setPosition(600,600);
+      }
+    }
   }
   
   void move(){

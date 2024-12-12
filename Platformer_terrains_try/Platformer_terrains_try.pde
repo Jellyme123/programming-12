@@ -3,12 +3,13 @@ import fisica.*;
 FWorld world;
 FPlayer player;
 
-PImage map,water1,brick,treeTrunk, tree, lava0,treeIntersect,ltreeend,rtreeend,spike,bridge, trampoline;
+PImage map,water1,brick,treeTrunk, tree,treeIntersect,ltreeend,rtreeend,spike,bridge, trampoline;
 PImage[] idle;
 PImage[] jump;
 PImage[] walk;
 PImage[] action;
 PImage[] goomba;
+PImage[] lava;
 
 int gridSize=32;
 float zoom=1.5;
@@ -34,7 +35,7 @@ color pink=#ffa3b1;
 
 
 void setup() {
-  size(2000, 2000);
+  size(1500, 1500);
   Fisica.init(this);
   terrain= new ArrayList<FGameObject>();
   enemies= new ArrayList<FGameObject>();
@@ -45,14 +46,31 @@ void setup() {
 treeTrunk = loadImage("tree_trunk.png");
  
 brick= loadImage("brick.png");
-lava0= loadImage("lava0.png");
+//lava
+lava= new PImage[6];
+lava[0]= loadImage("lava0.png");
+lava[1]= loadImage("lava1.png");
+lava[2]= loadImage("lava2.png");
+lava[3]= loadImage("lava3.png");
+lava[4]= loadImage("lava4.png");
+lava[5]= loadImage("lava5.png");
+
+//tree
 tree= loadImage("treetop_center.png");
 treeIntersect= loadImage("tree_intersect.png");
 ltreeend=loadImage("treetop_w.png");
 rtreeend=loadImage("treetop_e.png");
+
+//other
 spike=loadImage("spike.png");
 bridge=loadImage("bridge.png");
 trampoline=loadImage("more/trampoline.png");
+
+//terrain move
+
+
+
+
 
 //load actions
 idle= new PImage[2];
@@ -106,7 +124,7 @@ goomba[1].resize(gridSize, gridSize);
 //other terrains
 water1.resize (32,32);
  tree.resize (32,32);
- lava0.resize (32,60);
+
  spike.resize (32,100);
  bridge.resize(32,50);
   loadWorld(map);
@@ -157,15 +175,6 @@ void loadWorld(PImage img) {
         b.setName("treetrunk");
         world.add(b);
       }
-      if(c==red){ 
-        b.attachImage(lava0);
-        b.setSensor(true);
-        b.setName("lava0");
-        world.add(b);
-      }
-      
-      
-      
       if(c==green) { 
         b.attachImage(tree);
         b.setName("tree");
@@ -205,6 +214,11 @@ void loadWorld(PImage img) {
        FGoomba gmb=new FGoomba(x*gridSize,y*gridSize);
        terrain.add(gmb);
        world.add(gmb);
+      }
+      if(c==red){
+        FLava la=new FLava();
+        terrain.add(la);
+        world.add(la);
       }
     }
   }
