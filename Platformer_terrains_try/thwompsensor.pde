@@ -1,10 +1,11 @@
-class FLava extends FGameObject{
+class FThwompsensor extends FGameObject{
  
   int frame=0;
   
   FLava(float x, float y){
     super();
     setPosition(x,y);
+    setStatic(true);
     setName("lava");
   }
   

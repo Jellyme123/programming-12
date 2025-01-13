@@ -3,6 +3,7 @@ class FPlayer extends FGameObject{
   int frame;
   int direction;
   int lives;
+ 
   
   FPlayer(){
     super();
@@ -11,7 +12,7 @@ class FPlayer extends FGameObject{
     direction=R;
     setName("player");
     setRotatable(false);
-    setPosition(600,300);
+    setPosition(50,200);
     setFillColor(red);
   }
   
@@ -28,22 +29,23 @@ class FPlayer extends FGameObject{
   if(abs(vy)<0.1){
     action=idle;
   }
-  if (wkey&& isTouching("brick")) {
-    vy = -600;
-    
+  if (wkey && isTouching("brick") || wkey && isTouching("tree")|| wkey && isTouching("musicbox")||  wkey && isTouching("wall")) {
+    if(player.getY()>getY()-gridSize/2){
+    vy = -400;
+    }
   }
   
   if (skey) {
-    vy = 600;
+    vy = 400;
     
   }
   if (akey) {
-    vx = -200;
+    vx = -250;
     action=walk;
     direction=L;
   }
   if (dkey) {
-    vx = 200;
+    vx = 250;
     action=walk;
     direction=R;
   }
@@ -65,8 +67,10 @@ class FPlayer extends FGameObject{
   
   void collision(){
   if(isTouching("spike")){
-     setPosition(600,600);
+     setPosition(50,200);
+   }
+   if(isTouching("lava")){
+     setPosition(50,200);
    }
   }
-
 }

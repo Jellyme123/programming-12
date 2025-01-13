@@ -1,7 +1,7 @@
 class FGoomba extends FGameObject{
   
   int direction=L;
-  int speed= 50;
+  int speed= 100;
   int frame=0;
   
   FGoomba(float x, float y){
@@ -38,7 +38,7 @@ class FGoomba extends FGameObject{
       player.setVelocity(player.getVelocityX(),-600);
       }else{
         player.lives--;
-        player.setPosition(600,600);
+        player.setPosition(50,200);
       }
     }
   }

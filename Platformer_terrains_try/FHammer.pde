@@ -1,0 +1,4 @@
+class hammer extends FGameObject{
+  
+  
+}
