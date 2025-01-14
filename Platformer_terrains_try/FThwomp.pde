@@ -1,30 +1,41 @@
 class FThwomp extends FGameObject{
    int speed= 100;
    int direction= Down;
+   float X,Y;
    
   FThwomp(float x, float y){
      super();
     setPosition(x,y);
     setName("thwomp");
+    
      setStatic(true);
     setRotatable(false);
-    
+    X=x;
+    Y=y;
+    if(x>getX()){
+      x=getX()+1;
+    }
+    if(x<getX()){
+      x=getX()-1;
+    }
     
   }
   
   
   void act(){
     //animate();
+    
     collide();
     move();
   }
   
   
   void collide(){
-    if(isTouching("wall")){
+    if(isTouching("ts")){
+      float vx= getVelocityX();
       //if(getY()-gridSize/2){
       direction *=Down;
-      setPosition(getX(), getY()+ direction);
+      setVelocity(vx,speed*direction*-1);
       
       //}
     }
@@ -38,12 +49,16 @@ class FThwomp extends FGameObject{
   }
   
   void move(){
-    
+    if(getX()!=X) setPosition(X,getY());
     float vx= getVelocityX();
-    if(player.getY()>getY() && player.getX() == getX()){
-      setStatic(false);
-    setVelocity(vx,speed*direction);
     
+    if(player.getY()>getY() ){
+      setStatic(false);
+      
+    setVelocity(0,speed*direction);
+    
+    }else{
+      setVelocity(0,speed*-1*direction);
     }
   }
   

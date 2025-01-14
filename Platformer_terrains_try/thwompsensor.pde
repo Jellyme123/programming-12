@@ -2,27 +2,20 @@ class FThwompsensor extends FGameObject{
  
   int frame=0;
   
-  FLava(float x, float y){
+  FThwompsensor(float x, float y){
     super();
     setPosition(x,y);
     setStatic(true);
-    setName("lava");
+    setName("thwompsensor");
   }
   
-  void act(){
+  /*void act(){
     animate();
     collide();
     
   }
   
-  void animate(){
-    if(frame >= lava.length) frame=0;
-    
-    if(frameCount%5 ==0){
-      attachImage(lava[frame]);
-      frame++;
-    }
-  }
+ 
   
   void collide(){
     if(isTouching("player")){
@@ -32,5 +25,5 @@ class FThwompsensor extends FGameObject{
       }
     }
   }
-  
+  */
 }

@@ -41,6 +41,20 @@ color hammerbro=#d3f9bc;
 color thwomp= #2f3699;
 color thwompsensor= #6f3198;
 
+
+boolean thwompwake;
+boolean thwompsleep;
+
+
+
+
+
+
+
+
+
+
+
 void setup() {
   size(1500, 1500);
   Fisica.init(this);
@@ -259,7 +273,7 @@ void loadWorld(PImage img) {
         world.add(thw);
       }
       if (c==thwompsensor) {
-        FThwompsensor ts=new FLava(x*gridSize, y*gridSize);
+        FThwompsensor ts=new FThwompsensor(x*gridSize, y*gridSize);
         terrain.add(ts);
         world.add(ts);
       }
