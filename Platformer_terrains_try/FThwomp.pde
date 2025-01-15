@@ -52,12 +52,11 @@ class FThwomp extends FGameObject{
     if(getX()!=X) setPosition(X,getY());
     float vx= getVelocityX();
     
-    if(player.getY()>getY() ){
+    if(player.getY()>getY() && thwompwake==true && thwomp.getX()==thwompsensor.getX()){
       setStatic(false);
-      
     setVelocity(0,speed*direction);
     
-    }else{
+    }else if(thwompwake==false){
       setVelocity(0,speed*-1*direction);
     }
   }

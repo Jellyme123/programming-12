@@ -1,4 +1,4 @@
-class FThwompsensor extends FGameObject{
+/*class FThwompsensor extends FGameObject{
  
   int frame=0;
   
@@ -25,5 +25,6 @@ class FThwompsensor extends FGameObject{
       }
     }
   }
-  */
+  
 }
+*/

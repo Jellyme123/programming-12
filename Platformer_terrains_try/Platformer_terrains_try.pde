@@ -43,25 +43,17 @@ color thwompsensor= #6f3198;
 
 
 boolean thwompwake;
-boolean thwompsleep;
-
-
-
-
-
-
-
-
 
 
 
 void setup() {
   size(1500, 1500);
+  thwompwake=false;
+  
+  
   Fisica.init(this);
   terrain= new ArrayList<FGameObject>();
   enemies= new ArrayList<FGameObject>();
-
-
 
 
   map = loadImage("terrainmap1.png");
@@ -191,6 +183,12 @@ void loadWorld(PImage img) {
         b.setName("wall");
         world.add(b);
       }
+      if (c==thwompsensor) {//wall
+        b.attachImage(brick);
+        b.setFriction(4);
+        b.setName("thwompsensor");
+        world.add(b);
+      }
       if (c==pink) {
         b.attachImage(trampoline);
         b.setRestitution(2);
@@ -272,11 +270,7 @@ void loadWorld(PImage img) {
         terrain.add(thw);
         world.add(thw);
       }
-      if (c==thwompsensor) {
-        FThwompsensor ts=new FThwompsensor(x*gridSize, y*gridSize);
-        terrain.add(ts);
-        world.add(ts);
-      }
+      
      
       
       

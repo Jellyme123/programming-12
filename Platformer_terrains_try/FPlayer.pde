@@ -73,5 +73,11 @@ class FPlayer extends FGameObject{
    if(isTouching("lava")){
      setPosition(50,200);
    }
+   if(isTouching("thwompsensor")){
+     thwompwake=true;
+     println("abc");
+   }else{
+     thwompwake=false;
+   }
   }
 }
