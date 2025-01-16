@@ -43,12 +43,13 @@ color thwompsensor= #6f3198;
 
 
 boolean thwompwake;
-
+boolean thwomptimer;
 
 
 void setup() {
   size(1500, 1500);
   thwompwake=false;
+  thwomptimer=false;
   
   
   Fisica.init(this);
@@ -249,7 +250,7 @@ void loadWorld(PImage img) {
         world.add(gmb);
       }
       if (c==hammerbro) {
-        FGoomba gmb=new FGoomba(x*gridSize, y*gridSize);
+        FGoomba gmb=new FGoomba(2*gridSize, 2*gridSize);
         terrain.add(gmb);
         world.add(gmb);
       }
@@ -265,6 +266,7 @@ void loadWorld(PImage img) {
         terrain.add(la);
         world.add(la);
       }
+      
       if(c==thwomp && img.get(x+1,y)== thwomp && img.get(x,y+1)== thwomp && img.get(x+1,y+1)==thwomp){
         FThwomp thw= new FThwomp(x*gridSize, y*gridSize);
         terrain.add(thw);

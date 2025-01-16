@@ -1,4 +1,4 @@
-class hammer extends FGameObject{
+//class hammer extends FGameObject{
   
   
-}
+//}

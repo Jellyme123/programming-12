@@ -1,9 +1,11 @@
 class FThwomp extends FGameObject{
-   int speed= 100;
+   int speed= 300;
    int direction= Down;
    float X,Y;
+   //float timer;
    
   FThwomp(float x, float y){
+    
      super();
     setPosition(x,y);
     setName("thwomp");
@@ -12,12 +14,20 @@ class FThwomp extends FGameObject{
     setRotatable(false);
     X=x;
     Y=y;
+    
     if(x>getX()){
       x=getX()+1;
     }
     if(x<getX()){
       x=getX()-1;
     }
+    /*
+    if(thwomptimer=true) {
+      timer=timer+0.1;
+    }else{
+      timer=0;
+    }
+    */
     
   }
   
@@ -50,15 +60,21 @@ class FThwomp extends FGameObject{
   
   void move(){
     if(getX()!=X) setPosition(X,getY());
-    float vx= getVelocityX();
     
-    if(player.getY()>getY() && thwompwake==true && thwomp.getX()==thwompsensor.getX()){
+    float vx= getVelocityX();
+    if(isTouching("thwompsensor")){
+     thwompwake=false;
+     thwomptimer=false;
+     println("abc");
+   }else{
+     thwompwake=true;
+   }
+   
+    if(player.getY()-200>getY() && thwompwake==true /*&& timer>3*/){
       setStatic(false);
     setVelocity(0,speed*direction);
-    
     }else if(thwompwake==false){
       setVelocity(0,speed*-1*direction);
     }
-  }
-  
+}
 }

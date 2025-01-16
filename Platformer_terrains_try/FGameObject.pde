@@ -5,10 +5,13 @@ class FGameObject extends FBox{
   final int Up=-1;
   final int Down=1;
   
+  
   FGameObject(){ 
-  super(gridSize, gridSize);
+  super(gridSize,gridSize);
+  }
   
-  
+  FGameObject(float gx,float gy){
+    super(gx,gy);
   }
   
   void act(){
