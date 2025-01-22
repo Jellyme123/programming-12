@@ -38,7 +38,7 @@ class FGoomba extends FGameObject{
       player.setVelocity(player.getVelocityX(),-600);
       }else{
         player.lives--;
-        player.setPosition(50,200);
+        player.setPosition(pix,piy);
       }
     }
   }

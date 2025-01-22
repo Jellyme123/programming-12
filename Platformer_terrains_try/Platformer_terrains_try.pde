@@ -3,14 +3,17 @@ import fisica.*;
 FWorld world;
 FPlayer player;
 
-PImage map, water1, brick, treeTrunk, tree, treeIntersect, ltreeend, rtreeend, spike, bridge, trampoline,musicbox;
+ //int worldtimer=0;
+
+PImage map, water1, brick, treeTrunk, tree, treeIntersect, ltreeend, rtreeend, spike, bridge, trampoline,musicbox,hammer, fireball;
 PImage[] idle;
 PImage[] jump;
 PImage[] walk;
 PImage[] action;
 PImage[] goomba;
 PImage[] lava;
-//PImage[] hammerbro;
+PImage[] Thwomp;
+PImage[] Hammerbro;
 
 int gridSize=32;
 float zoom=1.5;
@@ -46,8 +49,15 @@ boolean thwompwake;
 boolean thwomptimer;
 
 
+float pix,piy;
+
+
 void setup() {
   size(1500, 1500);
+  frameRate(60);
+  pix=50;
+  piy=200;
+  
   thwompwake=false;
   thwomptimer=false;
   
@@ -63,6 +73,8 @@ void setup() {
   treeTrunk = loadImage("tree_trunk.png");
 
   brick= loadImage("brick.png");
+  hammer=loadImage("more/hammer.png");
+  fireball=loadImage("more/fireball.png");
 
   //lava
   lava= new PImage[6];
@@ -138,19 +150,30 @@ void setup() {
   goomba[1]=loadImage("more/goomba1.png");
   goomba[1].resize(gridSize, gridSize);
 
+
+  //thwomp
+   Thwomp=new PImage[2];
+  Thwomp[0]=loadImage("more/thwomp0.png");
+  Thwomp[0].resize(2*gridSize,2*gridSize);
+  Thwomp[1]=loadImage("more/thwomp1.png");
+  Thwomp[1].resize(2*gridSize,2*gridSize);
+  
+  //
   //hammerbro
-/*
-  hammerbro= new PImage[2];
-  hammerbro[0]=loadImage("more/hammerbro0.png");
-  hammerbro[0].resize(gridSize, gridSize);
-  hammerbro[1]=loadImage("more/hammerbro1.png");
-  hammerbro[1].resize(gridSize, gridSize);
-*/
+
+  Hammerbro= new PImage[2];
+  Hammerbro[0]=loadImage("more/hammerbro0.png");
+  Hammerbro[0].resize(gridSize, gridSize);
+  Hammerbro[1]=loadImage("more/hammerbro1.png");
+  Hammerbro[1].resize(gridSize, gridSize);
+
+  
 
   //other terrains
   water1.resize (32, 32);
   tree.resize (32, 32);
-
+  hammer.resize(32,32);
+  fireball.resize(32,32);
   spike.resize (32, 100);
   bridge.resize(32, 50);
   musicbox.resize(32,50);
@@ -168,6 +191,8 @@ void loadWorld(PImage img) {
       color s= img.get(x, y+1); //color below current pixel
       color w= img.get(x-1, y); //color west of current
       color e= img.get(x+1, y); // color east of current
+
+
 
       FBox b = new FBox(gridSize, gridSize);
       b.setPosition(x*gridSize, y*gridSize);
@@ -250,16 +275,10 @@ void loadWorld(PImage img) {
         world.add(gmb);
       }
       if (c==hammerbro) {
-        FGoomba gmb=new FGoomba(2*gridSize, 2*gridSize);
-        terrain.add(gmb);
-        world.add(gmb);
+        FHammerBro hb=new FHammerBro(x*gridSize, y*gridSize);
+        terrain.add(hb);
+        world.add(hb);
       }
-
-      // if(c==hammerbroColor){
-      // FGoomba hbro=new FHammerBro(x*gridSize,y*gridSize);
-      // terrain.add(hbro);
-      // world.add(hbro);
-      // }
 
       if (c==red) {
         FLava la=new FLava(x*gridSize, y*gridSize);
@@ -267,15 +286,20 @@ void loadWorld(PImage img) {
         world.add(la);
       }
       
-      if(c==thwomp && img.get(x+1,y)== thwomp && img.get(x,y+1)== thwomp && img.get(x+1,y+1)==thwomp){
+      if(c==thwomp){
         FThwomp thw= new FThwomp(x*gridSize, y*gridSize);
         terrain.add(thw);
         world.add(thw);
       }
       
-     
-      
-      
+      /*if(c==hammerbro){
+        FHammer h=new FHammer(x*gridSize, y*gridSize);
+        h.setSensor(true);
+        terrain.add(h);
+        world.add(h);
+      }
+      */
+
     }
   }
 }
@@ -285,7 +309,10 @@ void draw() {
   background(255);
   drawWorld();
   actWorld();
+  //worldtimer=worldtimer+1;
+   //println(worldtimer);
 }
+
 void actWorld() {
   player.act();
   for (int i=0; i< terrain.size(); i++) {

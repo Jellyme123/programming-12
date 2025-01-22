@@ -6,14 +6,14 @@ class FPlayer extends FGameObject{
  
   
   FPlayer(){
-    super();
+    super(gridSize,gridSize);
     frame=0;
     lives=3;
     direction=R;
     setName("player");
     setRotatable(false);
     setDensity(0.01);
-    setPosition(50,200);
+    setPosition(pix,piy);
     setFillColor(red);
   }
   
@@ -41,12 +41,12 @@ class FPlayer extends FGameObject{
     
   }
   if (akey) {
-    vx = -250;
+    vx = -290;
     action=walk;
     direction=L;
   }
   if (dkey) {
-    vx = 250;
+    vx = 290;
     action=walk;
     direction=R;
   }
@@ -68,10 +68,13 @@ class FPlayer extends FGameObject{
   
   void collision(){
   if(isTouching("spike")){
-     setPosition(50,200);
+     setPosition(pix,piy);
    }
    if(isTouching("lava")){
-     setPosition(50,200);
+     setPosition(pix,piy);
+   }
+   if(isTouching("hammer")){
+      setPosition(50,200);
    }
    
   }

@@ -1,19 +1,22 @@
 class FThwomp extends FGameObject{
    int speed= 300;
    int direction= Down;
+   int form;
    float X,Y;
    //float timer;
    
   FThwomp(float x, float y){
     
-     super();
-    setPosition(x,y);
+     super(2*gridSize,2*gridSize);
+    setPosition(x+gridSize/2,y+gridSize/2);
     setName("thwomp");
     
      setStatic(true);
     setRotatable(false);
     X=x;
     Y=y;
+    
+    form =1;
     
     if(x>getX()){
       x=getX()+1;
@@ -34,11 +37,37 @@ class FThwomp extends FGameObject{
   
   void act(){
     //animate();
-    
+    if(getX()!=X-gridSize/2) setPosition(X+gridSize/2,getY());
     collide();
-    move();
+    //move();
+    statechange();
   }
   
+  void statechange(){
+    if (player.getY()>getY() && player.getY()<getY()+10*gridSize && abs(getX()-player.getX())<gridSize) {
+        form=2;
+      }
+      
+      if(form==1){
+        attachImage(Thwomp[0]);
+      }
+      if (form==2) {
+      setStatic(false);
+      attachImage(Thwomp[1]);
+    }
+    
+    if (isTouching("thwompsensor")) {
+      form=3;
+    }
+    if (form==3) {
+      setVelocity(0, -200);
+      attachImage(Thwomp[0]);
+      if (dist(getX(), getY(), X, Y) < 5) {
+        form=1;
+      }
+    }
+
+  }
   
   void collide(){
     if(isTouching("ts")){
@@ -51,30 +80,12 @@ class FThwomp extends FGameObject{
     }
     
     if(isTouching("player")){
-      if(player.getY()<getY()-gridSize){
+      
         player.lives--;
-        player.setPosition(600,600);
-      }
+        player.setPosition(pix,piy);
+      
     }
   }
   
-  void move(){
-    if(getX()!=X) setPosition(X,getY());
-    
-    float vx= getVelocityX();
-    if(isTouching("thwompsensor")){
-     thwompwake=false;
-     thwomptimer=false;
-     println("abc");
-   }else{
-     thwompwake=true;
-   }
-   
-    if(player.getY()-200>getY() && thwompwake==true /*&& timer>3*/){
-      setStatic(false);
-    setVelocity(0,speed*direction);
-    }else if(thwompwake==false){
-      setVelocity(0,speed*-1*direction);
-    }
-}
+ 
 }
