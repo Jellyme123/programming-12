@@ -1,0 +1,172 @@
+
+MCPlayer player;
+
+void loadPlayer() {
+  player = new MCPlayer();
+}
+
+void drawPlayer() {
+  player.act();
+}
+
+class MCPlayer {
+
+  float speed=5;
+
+  MCPlayer() {
+  }
+
+  void act() {
+    move();
+    controlCamera();
+  }
+
+  void move() {
+    float w=radians(0.5), d=5, s=0.02;
+    println(keyD && touchBlockX() != 2, touchBlockX());
+    if (keyD) {
+      if (touchBlockX() !=2 && touchBlockZ() !=2 && touchBlockY()==0 && horizontalAngle>=0) {
+        eyeX+=speed*sin(horizontalAngle);
+        eyeZ+=speed*cos(horizontalAngle);
+      }
+      if (touchBlockX() !=1 && touchBlockZ() !=1 && touchBlockY()==0 && horizontalAngle<0) {
+        eyeX+=speed*sin(horizontalAngle);
+        eyeZ+=speed*cos(horizontalAngle);
+      }
+    }
+    if (keyA) {
+      if ( touchBlockX() != 1 && touchBlockZ() !=1 && touchBlockY()==0) {
+        eyeX-=speed*sin(horizontalAngle);
+        eyeZ-=speed*cos(horizontalAngle);
+      }
+    }
+    if (keyW) {
+      if (touchBlockX() != 1 && touchBlockZ()!=1) {
+        eyeX+=speed*cos(horizontalAngle);
+        eyeZ-=speed*sin(horizontalAngle);
+        eyeY+=speed*tan(verticalAngle);
+      }
+    }
+    if (keyS) {
+      if (touchBlockX() != 2 && touchBlockZ()!=2) {
+        eyeX-=speed*cos(horizontalAngle);
+        eyeZ+=speed*sin(horizontalAngle);
+        eyeY-=speed*tan(verticalAngle);
+      }
+    }
+  }
+
+
+  boolean touchBlock() {
+    for (int i=0; i<allBlocks.size(); i++) {
+      float X, Y, Z, W;
+      MCBlock block = allBlocks.get(i);
+      X=block.getX();
+      Y=block.getY();
+      Z=block.getZ();
+      W=block.getW();
+      if (eyeX>X && eyeX<X+W) {
+        return true;
+      }
+      if (eyeY>Y && eyeY<eyeY+W) {
+        return true;
+      }
+      if (eyeZ>Z && eyeZ<eyeZ+W) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  float touchBlockX() {
+    for (int i=0; i<allBlocks.size(); i++) {
+      float X, Y, Z, W;
+      MCBlock block = allBlocks.get(i);
+      X=block.getX();
+      Y=block.getY();
+      Z=block.getZ();
+      W=block.getW();
+      if (eyeX>X-speed && eyeX<X+W+speed && eyeY>Y && eyeY<Y+W && eyeZ>Z && eyeZ<Z+W) {
+        if (eyeX>X)
+          return 1;
+        if (eyeX<=X)
+          return 2;
+      }
+    }
+
+    return 0;
+  }
+  float  touchBlockY() {
+    for (int i=0; i<allBlocks.size(); i++) {
+      float X, Y, Z, W;
+      MCBlock block = allBlocks.get(i);
+      X=block.getX();
+      Y=block.getY();
+      Z=block.getZ();
+      W=block.getW();
+      if (eyeX>X && eyeX<X+W && eyeY>Y-speed && eyeY<Y+W+speed && eyeZ>Z && eyeZ<Z+W) {
+        if (eyeY>Y)
+          return 1;
+        if (eyeY<=Y)
+          return 2;
+      }
+    }
+
+    return 0;
+  }
+  float touchBlockZ() {
+    for (int i=0; i<allBlocks.size(); i++) {
+      float X, Y, Z, W;
+      MCBlock block = allBlocks.get(i);
+      X=block.getX();
+      Y=block.getY();
+      Z=block.getZ();
+      W=block.getW();
+      if (eyeX>X && eyeX<X+W && eyeY>Y && eyeY<Y+W && eyeZ>Z-speed && eyeZ<Z+W+speed) {
+        if (eyeZ>Z)
+          return 1;
+        if (eyeZ<=Z)
+          return 2;
+      }
+    }
+
+    return 0;
+  }
+
+
+  void controlCamera() {
+
+    verticalAngle=min(verticalAngle, PI/2.5);
+    verticalAngle=max(verticalAngle, -PI/2.5);
+
+    focusX=eyeX+cos(horizontalAngle)*sight;
+    focusY=eyeY+tan(verticalAngle)*sight;
+    focusZ=eyeZ-sin(horizontalAngle)*sight;
+
+    camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, rotX, rotY, rotZ);
+    drawFocalPoint();
+
+    //if (mouseX>width-2) rbt.mouseMove(2, mouseY);
+    //else if (mouseX<2)rbt.mouseMove(width-2, mouseY);
+  }
+
+
+  void drawFocalPoint() {
+    pushMatrix();
+    translate(focusX, focusY, focusZ);
+    fill(255);
+    noStroke();
+    sphere(5);
+    showAxis(0, 0, 0);
+    stroke(150, 150, 0);
+
+    line(0, 0, 0,
+      width*cos(horizontalAngle), 0, -width*sin(horizontalAngle));
+
+    fill(255, 0, 255);
+    addSphere(30*cos(horizontalAngle), 0, -30*sin(horizontalAngle), 10);
+    fill(255);
+    text(180/PI*horizontalAngle%360, 30*cos(horizontalAngle), 0, -30*sin(horizontalAngle));
+    popMatrix();
+  }
+}
