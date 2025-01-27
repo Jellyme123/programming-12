@@ -53,6 +53,7 @@ class FHammerBro extends FGameObject {
       float vx = getVelocityX();
       setVelocity(vx, speed * direction);
       Htimer = 0;
+      
     }
   }
 }
@@ -72,6 +73,8 @@ class Hammer extends FGameObject {
       println("1");
     }
   }
+  
+  
 
   void collide() {
     if (isTouching("brick")) {

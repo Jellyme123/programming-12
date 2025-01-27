@@ -37,11 +37,14 @@ class FGoomba extends FGameObject{
       enemies.remove(this);
       player.setVelocity(player.getVelocityX(),-600);
       }else{
-        player.lives--;
+      
         player.setPosition(pix,piy);
+        
       }
     }
   }
+  
+  
   
   void move(){
     float vy= getVelocityY();

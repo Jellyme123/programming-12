@@ -1,11 +1,17 @@
+
+//import processing.sound.
 import fisica.*;
+
+float gameMode=0;
+
 
 FWorld world;
 FPlayer player;
 
  //int worldtimer=0;
 
-PImage map, water1, brick, treeTrunk, tree, treeIntersect, ltreeend, rtreeend, spike, bridge, trampoline,musicbox,hammer, fireball;
+
+PImage map, water1, brick, treeTrunk, tree, treeIntersect, ltreeend, rtreeend, spike, bridge, trampoline,musicbox,hammer, fireball,bg1,map1,terrainmap1;
 PImage[] idle;
 PImage[] jump;
 PImage[] walk;
@@ -14,9 +20,13 @@ PImage[] goomba;
 PImage[] lava;
 PImage[] Thwomp;
 PImage[] Hammerbro;
+PImage[] Checkpoint;
+PImage[] Portal;
 
 int gridSize=32;
 float zoom=1.5;
+
+PImage m;
 
 boolean wkey, akey, skey, dkey, upkey, downkey, rightkey, leftkey;
 ArrayList <FGameObject> terrain;
@@ -35,6 +45,8 @@ color steel=#bfbebd;
 color brown=#994831;
 color grey=#b4b4b4;
 color wallgrey=#464646;
+color portal=#8400ff;
+color checkpoint=#51bac2;
 
 color Goombas=#990030;
 
@@ -48,26 +60,39 @@ color thwompsensor= #6f3198;
 boolean thwompwake;
 boolean thwomptimer;
 
+boolean newworld;
+
 
 float pix,piy;
 
+float diex,checky;
+
+float checkPointX,checkPointY;
+
 
 void setup() {
-  size(1500, 1500);
+  size(1000, 800);
   frameRate(60);
-  pix=50;
+ newworld=false;
+  int life=3;
+
+  pix=200;
   piy=200;
+  
+  
   
   thwompwake=false;
   thwomptimer=false;
   
-  
+ 
   Fisica.init(this);
   terrain= new ArrayList<FGameObject>();
   enemies= new ArrayList<FGameObject>();
 
-
-  map = loadImage("terrainmap1.png");
+  bg1= loadImage("bg1.png");
+  bg1.resize(1000,800);
+  map1 = loadImage("map1.png");
+  terrainmap1=loadImage("terrainmap1.png");
   water1 = loadImage("water1.png") ;
 
   treeTrunk = loadImage("tree_trunk.png");
@@ -99,6 +124,8 @@ void setup() {
 
   // weapons
   //hammer=loadImage("hammer.png");
+
+
 
 
   //load actions
@@ -143,6 +170,9 @@ void setup() {
   idle[0].resize (130, 40);
   idle[1].resize (130, 40);
 
+
+
+
   //goomba
   goomba=new PImage[2];
   goomba[0]=loadImage("more/goomba0.png");
@@ -167,8 +197,33 @@ void setup() {
   Hammerbro[1]=loadImage("more/hammerbro1.png");
   Hammerbro[1].resize(gridSize, gridSize);
 
+  //checkpoint
   
-
+  Checkpoint=new PImage[6];
+  Checkpoint[0]=loadImage("checkpoint/check0.gif");
+  Checkpoint[0].resize(gridSize,gridSize);
+  Checkpoint[1]=loadImage("checkpoint/check1.gif");
+  Checkpoint[1].resize(gridSize,gridSize);
+  Checkpoint[2]=loadImage("checkpoint/check2.gif");
+  Checkpoint[2].resize(gridSize,gridSize);
+  Checkpoint[3]=loadImage("checkpoint/check3.gif");
+  Checkpoint[3].resize(gridSize,gridSize);
+  Checkpoint[4]=loadImage("checkpoint/check4.gif");
+  Checkpoint[4].resize(gridSize,gridSize);
+  Checkpoint[5]=loadImage("checkpoint/check5.gif");
+  Checkpoint[5].resize(gridSize,gridSize);
+  
+  
+  Portal=  new PImage[4];
+  Portal[0]= loadImage("more/portal1.png");
+  Portal[0].resize(gridSize,gridSize);
+  Portal[1]= loadImage("more/portal2.png");
+  Portal[1].resize(gridSize,gridSize);
+  Portal[2]= loadImage("more/portal3.png");
+  Portal[2].resize(gridSize,gridSize);
+  Portal[3]= loadImage("more/portal4.png");
+  Portal[3].resize(gridSize,gridSize);
+  
   //other terrains
   water1.resize (32, 32);
   tree.resize (32, 32);
@@ -177,141 +232,53 @@ void setup() {
   spike.resize (32, 100);
   bridge.resize(32, 50);
   musicbox.resize(32,50);
-  loadWorld(map);
+  loadWorld(map1);
+  loadPlayer();
+  /*
+if(newworld=true){
+  actWorld();
+
+ loadWorld(terrainmap1);
+  loadPlayer();
+   
+}else{
+  loadWorld(map1);
   loadPlayer();
 }
-
-void loadWorld(PImage img) {
-  world=new FWorld(-2000, -2000, 2000, 2000);
-  world.setGravity(0, 1000);
-
-  for (int y=0; y< img.height; y++) {
-    for (int x=0; x<img.width; x++) {
-      color c=img.get(x, y); //color of current pixel
-      color s= img.get(x, y+1); //color below current pixel
-      color w= img.get(x-1, y); //color west of current
-      color e= img.get(x+1, y); // color east of current
-
-
-
-      FBox b = new FBox(gridSize, gridSize);
-      b.setPosition(x*gridSize, y*gridSize);
-      b.setStatic(true);
-      if (c==black) {//stone
-        b.attachImage(brick);
-        b.setFriction(20);
-        b.setName("brick");
-        world.add(b);
-      }
-      if (c==wallgrey) {//wall
-        b.attachImage(brick);
-        b.setFriction(4);
-        b.setName("wall");
-        world.add(b);
-      }
-      if (c==thwompsensor) {//wall
-        b.attachImage(brick);
-        b.setFriction(4);
-        b.setName("thwompsensor");
-        world.add(b);
-      }
-      if (c==pink) {
-        b.attachImage(trampoline);
-        b.setRestitution(2);
-        b.setName("trampoline");
-        world.add(b);
-      }
-      if (c==cyan) { //water
-        b.attachImage(water1);
-        b.setFriction(0);
-        b.setName("water1");
-        world.add(b);
-      }
-      if (c==treeTrunkBrown) {
-        b.attachImage(treeTrunk);
-        b.setSensor(true);
-        b.setName("treetrunk");
-        world.add(b);
-      }
-      if (c==green) {
-        b.attachImage(tree);
-        b.setName("tree");
-        world.add(b);
-      }
-      if (c==grey) {
-        b.attachImage(spike);
-        b.setName("spike");
-        world.add(b);
-      }
-
-      if (c==green && img.get(x, y+1) == treeTrunkBrown) {
-        b.attachImage(treeIntersect);
-        b.setFriction(4);
-        b.setName("treeIntersect");
-        world.add(b);
-      }
-      if (c==green && img.get(x-1, y) == white) {
-        b.attachImage(ltreeend);
-        b.setFriction(4);
-        b.setName("ltreeend");
-        world.add(b);
-      }
-      if (c==green && img.get(x+1, y) == white) {
-        b.attachImage(rtreeend);
-        b.setFriction(4);
-        b.setName("rtreeend");
-        world.add(b);
-      }
-
-      //fancy terrain
-      if (c==orange) {
-        FBridge br=new FBridge(x*gridSize, y*gridSize);
-        terrain.add(br);
-        world.add(br);
-      }
-      if (c==Goombas) {
-        FGoomba gmb=new FGoomba(x*gridSize, y*gridSize);
-        terrain.add(gmb);
-        world.add(gmb);
-      }
-      if (c==hammerbro) {
-        FHammerBro hb=new FHammerBro(x*gridSize, y*gridSize);
-        terrain.add(hb);
-        world.add(hb);
-      }
-
-      if (c==red) {
-        FLava la=new FLava(x*gridSize, y*gridSize);
-        terrain.add(la);
-        world.add(la);
-      }
-      
-      if(c==thwomp){
-        FThwomp thw= new FThwomp(x*gridSize, y*gridSize);
-        terrain.add(thw);
-        world.add(thw);
-      }
-      
-      /*if(c==hammerbro){
-        FHammer h=new FHammer(x*gridSize, y*gridSize);
-        h.setSensor(true);
-        terrain.add(h);
-        world.add(h);
-      }
-      */
-
-    }
-  }
+*/
 }
 
 
 void draw() {
-  background(255);
+  
+   if (gameMode==0) {
+    introScreen();
+    newworld=false;
+  } else if (gameMode==1) {
+  background(bg1);
   drawWorld();
+   
   actWorld();
-  //worldtimer=worldtimer+1;
-   //println(worldtimer);
+  newworld=false;
+   
+  }else if(gameMode==2){
+    
+  nextScreen();
+ newworld=false;
+  }else if(gameMode==3){
+    // world.clear();
+ //background(bg1);
+ loadPlayer();
+ loadWorld(terrainmap1);
+//world.remove(player);
+   
+ 
+  }
+  
+
 }
+
+
 
 void actWorld() {
   player.act();
@@ -320,10 +287,43 @@ void actWorld() {
     t.act();
   }
   for (int i=0; i< enemies.size(); i++) {
-    FGameObject e= terrain.get(i);
+    FGameObject e= enemies.get(i);
     e.act();
   }
 }
+
+
+
+
+
+void introScreen(){
+  background(bg1);
+  textSize(50);
+   text("Press any key to start",300,400);
+   if(keyPressed){
+     gameMode=1;
+   }
+}
+void nextScreen(){
+  background(0);
+  textSize(50);
+  for(int i=terrain.size()-1; i>=0; i--){
+  terrain.remove(i);
+  }
+  world.clear();
+ 
+ loadWorld(terrainmap1);
+ loadPlayer();
+
+  text("Loading",100,400);
+   text("Press any key to skip",300,400);
+   if(keyPressed){
+     gameMode=3;
+   }
+}
+
+
+
 
 void loadPlayer() {
   player=new FPlayer();

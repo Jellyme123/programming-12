@@ -66,8 +66,9 @@ class FThwomp extends FGameObject{
         form=1;
       }
     }
-
   }
+  
+  
   
   void collide(){
     if(isTouching("ts")){
@@ -81,7 +82,7 @@ class FThwomp extends FGameObject{
     
     if(isTouching("player")){
       
-        player.lives--;
+        //life--;
         player.setPosition(pix,piy);
       
     }
